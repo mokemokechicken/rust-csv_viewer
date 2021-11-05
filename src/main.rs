@@ -2,7 +2,8 @@ use memmap::MmapOptions;
 use std::{env};
 use std::fs::File;
 use std::io;
-use std::io::Error;
+use std::io::{BufRead, Cursor, Error};
+use csv::{Reader, Position};
 
 fn main() -> Result<(), Error> {
     println!("--------------------------- start --------------------------------");
@@ -16,6 +17,7 @@ fn main() -> Result<(), Error> {
     let filename = args.get(1).unwrap();
     let file = File::open(filename)?;
     let mmap = unsafe { MmapOptions::new().map(&file)? };
-    println!("size={}", mmap.len());
+    let reader = Reader::from_reader(io::Cursor::new(mmap));
+
     Ok(())
 }

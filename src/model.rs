@@ -1,4 +1,4 @@
-use std::fs::{File, read};
+use std::fs::File;
 use std::io::Cursor;
 use csv::{Position, Reader, ReaderBuilder, StringRecord};
 use memmap::{Mmap, MmapOptions};
@@ -25,6 +25,7 @@ impl Model {
         let mut byte_index_list: Vec<u64> = Vec::new();
         let r = &mut self.reader;
         let mut iter = r.records();
+        byte_index_list.push(0);
         loop {
             let pos = iter.reader().position();
             if pos.line() % self.index_step == 0 {
